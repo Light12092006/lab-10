@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerenciar Carros</title>
+    <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+
+
+    <a href="/listar_carros">Listar Carros</a>
+    <a href="/usuarios/cadastro.html">Cadastrar Usuário</a>
+        
+
+    <h1>Gerenciar Carros</h1>
+
+    <form action="/gerenciar_carros" method="post">
+        <h3>Dados do carro atual:</h3>
+        Marca: <input type="text" name="marca"><br>
+        Modelo: <input type="text" name="modelo"><br>
+        Ano: <input type="number" name="ano"><br>
+
+        <h3>Se for atualizar, preencha os novos dados:</h3>
+        Nova Marca: <input type="text" name="novamarca"><br>
+        Novo Modelo: <input type="text" name="novomodelo"><br>
+        Novo Ano: <input type="text" name="novoano"><br>
+
+        <h3>Ação:</h3>
+        <input type="radio" name="acao" value="atualizar"> Atualizar<br>
+        <input type="radio" name="acao" value="remover"> Remover<br><br>
+
+        <input type="submit" value="Enviar">
+    </form>
+
+</body>
+</html>
