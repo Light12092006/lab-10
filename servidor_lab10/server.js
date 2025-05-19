@@ -13,7 +13,7 @@ var usuarios = dbo.collection("usuarios_carros");
 var carros = dbo.collection("carros");
 
 var app = express();
-app.use(express.static('./public'));
+app.use(express.static('.public'));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -51,13 +51,19 @@ app.post('/logar_usuario', function(req, resp) {
     let data = { db_login: req.body.login, db_senha: req.body.senha };
 
     usuarios.find(data).toArray(function(err, items) {
-        console.log(items);
-        if (items.length == 0) {
-            resp.render('resposta_usuario.ejs', { resposta: "Usuário/senha não encontrados" });
-        } else if (err) {
+        if (err) {
             resp.render('resposta_usuario.ejs', { resposta: "Erro ao logar usuário" });
+        } else if (items.length == 0) {
+            resp.render('resposta_usuario.ejs', { resposta: "Usuário/senha não encontrados" });
         } else {
-            resp.render('resposta_usuario.ejs', { resposta: "Usuário logado com sucesso" });
+            // listar carros
+            carros.find().toArray(function(err, items) {
+                if (err) {
+                    resp.render('resposta_usuario.ejs', { resposta: "Erro ao carregar carros" });
+                } else {
+                    resp.render("lista_carros.ejs", { carros: items });
+                }
+            });
         }
     });
 });
@@ -79,12 +85,6 @@ app.post('/cadastrar_carro', function(req, resp) {
     });
 });
 
-// Listar carros
-app.get("/listar_carros", function(req, resp) {
-    carros.find().toArray(function(err, items) {
-        resp.render("Lista_carros.ejs", { carros: items });
-    });
-});
 
 // Gerenciar carros 
 app.post("/gerenciar_carros", function(req, resp) {
@@ -120,7 +120,7 @@ app.post("/gerenciar_carros", function(req, resp) {
             if (err) {
                 resp.render('resposta_usuario.ejs', { resposta: "Erro ao remover carro!" });
             } else if (result.deletedCount === 0) {
-                resp.render('resposta_usuario.ejs', { resposta: "Carro não encontrado!" });
+                resp.render('resposta_usuario.ejs', { resposta: "Esgotado" });
             } else {
                 resp.render('resposta_usuario.ejs', { resposta: "Carro removido com sucesso!" });
             }
